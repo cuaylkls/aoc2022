@@ -78,3 +78,4 @@ game_scores = [
 
 total_score = sum([game['SCORE'] for game in game_scores])
 print(total_score)
+
