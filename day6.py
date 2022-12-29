@@ -1,4 +1,4 @@
-with open("day6-input.txt", "r") as f:
+with open("input-data/day6-input.txt", "r") as f:
     pos = 4
     current4 = f.read(4)
     current14 = current4

@@ -34,7 +34,7 @@ def fixed_width_split_string(string, size):
     return ret_list
 
 
-with open("day5-input.txt", "r") as f:
+with open("input-data/day5-input.txt", "r") as f:
     line = f.readline()
 
     while line.rstrip() != "":

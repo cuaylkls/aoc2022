@@ -60,7 +60,7 @@ def get_score_strategy(original_outcome):
     return strategy_outcome, strategy_score,
 
 
-f = open("day2-input.txt", "r")
+f = open("input-data/day2-input.txt", "r")
 
 data = f.read().strip()
 

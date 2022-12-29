@@ -287,7 +287,7 @@ def find_smallest(search_dir: VDirectory, min_size):
 def main():
     cmd = CommandLine()
 
-    with open('day7-input.txt', 'r') as f:
+    with open('input-data/day7-input.txt', 'r') as f:
         for f_line in f:
             cmd.process_command_line(f_line)
 

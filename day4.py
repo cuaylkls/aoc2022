@@ -1,6 +1,6 @@
 data = []
 
-with open("day4-input.txt", "r") as f:
+with open("input-data/day4-input.txt", "r") as f:
     for line in f:
         line = line.rstrip()
         data.append(

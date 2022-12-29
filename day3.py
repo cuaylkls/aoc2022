@@ -8,7 +8,7 @@ offset_upper = ord('A') - 27
 offset_lower = ord('a') - 1
 line_no = 1
 
-with open("day3-input.txt", "r") as f:
+with open("input-data/day3-input.txt", "r") as f:
     for line in f:
         line = line.strip()
         char_count = len(line)
