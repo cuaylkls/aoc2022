@@ -342,15 +342,15 @@ class VDirectoryTestCase(unittest.TestCase):
         day7.VFile("file3", 30, v_dir)
 
         # directory with only file
-        self.assertEqual(v_dir.size, 60)
+        self.assertEqual(60, v_dir.size)
 
         # sub directory
         day7.VFile("file1", 10, v_dir2)
         day7.VFile("file2", 20, v_dir2)
-        self.assertEqual(v_dir2.size, 30)
+        self.assertEqual(30, v_dir2.size)
 
         # size with sub-dirs and files
-        self.assertEqual(v_dir.size, 90)
+        self.assertEqual(90, v_dir.size)
 
 
 if __name__ == '__main__':

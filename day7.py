@@ -98,11 +98,14 @@ class VDirectory(VFsObject):
 
     @property
     def size(self):
-        size = 0
-        for item in self.children:
-            size += item.size
+        if self._size is None:
+            size = 0
+            for item in self.children:
+                size += item.size
 
-        return size
+            self._size = size
+
+        return self._size
 
     def add_child(self, child_obj: VFsObject):
         if not isinstance(child_obj, VFsObject):
@@ -114,11 +117,12 @@ class VDirectory(VFsObject):
                 raise VFSError(f"Cannot add child with duplicate name: {child_obj.name}")
 
         self._children.append(child_obj)
-
+        self.recalculate_size()
         return child_obj
 
     def remove_child(self, child_dir):
         self._children.remove(child_dir)
+        self.recalculate_size()
 
     def has_child(self, child_name: str) -> bool:
         for child in self._children:
@@ -132,8 +136,20 @@ class VDirectory(VFsObject):
             if child.name == child_name:
                 return child
 
+    def recalculate_size(self, force=False):
+        if self._size is None and not force:
+            return  # only reset size if not already reset
+
+        parent_dir: VDirectory = self.parent
+        self._size = None
+
+        while parent_dir is not None:
+            parent_dir.recalculate_size()
+            parent_dir = parent_dir.parent
+
     def __init__(self, dir_name, parent_dir=None):
         self._children = []
+        self._size = None
 
         if dir_name == "/":
             self._is_root = True
@@ -247,7 +263,7 @@ def recurse_filesystem(search_dir: VDirectory, max_size=0):
     return size
 
 
-def find_smallest(search_dir: VDirectory, min_size, max_size=-1):
+def find_smallest(search_dir: VDirectory, min_size):
     # scenario 1: directory size is less than min_size, no further search, return None
     if search_dir.size < min_size:
         return None
@@ -293,6 +309,7 @@ def main():
     smallest = find_smallest(cmd.file_system, space_to_free)
 
     print(f"Part 2: {smallest:,}")
+
 
 if __name__ == '__main__':
     main()
