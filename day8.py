@@ -140,11 +140,11 @@ def calculate_all_scenic_scores(forest):
 def calculate_scenic_score(forest, x, y):
     tree_height = forest[y][x]["height"]
 
-    def find_tree_distance(direction):
+    def find_view_distance(direction):
         x_len = len(forest[y])
         y_len = len(forest)
 
-        tree_count = 0
+        distance_count = 0
 
         direction_lookup = {
             'l': (-1, 0), 'r': (1, 0), 'u': (0, -1), 'd': (0, 1)
@@ -153,38 +153,33 @@ def calculate_scenic_score(forest, x, y):
 
         x_cur = x + x_move
         y_cur = y + y_move
-        last_tree_seen_height = 0
 
         while (x_cur >= 0) and (x_cur < x_len) and (y_cur >= 0) and (y_cur < y_len):
             check_height = forest[y_cur][x_cur]['height']
 
-            # only increment tree count if height exceeds the last tree seen
-            # if check_height >= last_tree_seen_height:
-            #    tree_count += 1
-            #     last_tree_seen_height = check_height
-            tree_count +=1
+            distance_count += 1
             if check_height >= tree_height:
                 break
 
             x_cur = x_cur + x_move
             y_cur = y_cur + y_move
 
-        return tree_count
+        return distance_count
 
     if x == 0 or x == len(forest[y]) - 1 or y == 0 or y == len(forest) - 1:
         return 0
 
     # look left
-    left = find_tree_distance("l")
+    left = find_view_distance("l")
 
     # look right
-    right = find_tree_distance("r")
+    right = find_view_distance("r")
 
     # walk up
-    top = find_tree_distance("u")
+    top = find_view_distance("u")
 
     # walk down
-    bottom = find_tree_distance("d")
+    bottom = find_view_distance("d")
 
     return top * bottom * left * right
 
@@ -195,12 +190,12 @@ def main():
     # read input file into a matrix
     with open("input-data/day8-input.txt", "r") as f:
         for line in f:
-            forest.append([{"height": int(height), "visible": None} for height in line.strip()])
+            forest.append([{"height": height, "visible": None} for height in line.strip()])
 
     calculate_visibility(forest)
     display_forest(forest)
     calculate_all_scenic_scores(forest)
-    display_forest_scenic_scores(forest)
+    # display_forest_scenic_scores(forest)
 
     total_visible = 0
     scenic_score = 0
