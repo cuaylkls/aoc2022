@@ -33,7 +33,7 @@ class Position:
     def __init__(self, x_pos=0, y_pos=0):
         self._x_pos = x_pos
         self._y_pos = y_pos
-        self.visited_positions = [(0, 0)]
+        self.visited_positions = {(0, 0)}
         self._linked_position = None
 
     def move_using_coordinates(self, instruction, step):
@@ -50,8 +50,7 @@ class Position:
         while cur_position != new_position:
             cur_position = (cur_position[0] + x_mov, cur_position[1] + y_mov)
 
-            if cur_position not in self.visited_positions:
-                self.visited_positions.append(cur_position)
+            self.visited_positions.add(cur_position)
 
             if self._linked_position is not None:
                 linked: Position = self._linked_position
@@ -59,22 +58,9 @@ class Position:
                 link_x_distance = cur_position[0] - link_x
                 link_y_distance = cur_position[1] - link_y
 
-                if (-1 <= link_x_distance <= 1) and (-1 <= link_y_distance <= 1):
-                    # no move required
-                    pass
-                else:
-                    if (abs(link_x_distance) > 1) and (abs(link_y_distance) == 1):
-                        # more than 1 point away in a left or right direction
-                        link_x_mov = link_x_distance - self._sign_int(link_x_distance)
-                        link_y_mov = link_y_distance
-                    elif (abs(link_y_distance) > 1) and (abs(link_x_distance) == 1):
-                        # more than 1 point away in a up or down direction
-                        link_x_mov = link_x_distance
-                        link_y_mov = link_y_distance - self._sign_int(link_y_distance)
-                    else:
-                        # more than one point away in either an up / down or left / right direction
-                        link_x_mov = link_x_distance - self._sign_int(link_x_distance)
-                        link_y_mov = link_y_distance - self._sign_int(link_y_distance)
+                if link_x_distance ** 2 + link_y_distance ** 2 > 2:
+                    link_x_mov = self._sign_int(link_x_distance)
+                    link_y_mov = self._sign_int(link_y_distance)
 
                     linked.move_using_coordinates((link_x_mov, link_y_mov), 1)
 
